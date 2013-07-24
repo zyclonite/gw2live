@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <webservice>
+        <hostname>localhost</hostname>
+        <webport>8383</webport>
+        <staticfiles>./web</staticfiles>
+        <cross-domain-policy>http://gw2map.com</cross-domain-policy>
+    </webservice>
+    <mongodb>
+        <hostname>127.0.0.1</hostname>
+        <port>27017</port>
+        <username></username>
+        <password></password>
+        <database>gw2live</database>
+    </mongodb>
+    <endpoints>
+        <oauth>https://oauth.guildwars2.com/login</oauth>
+        <gw2rest>https://api.guildwars2.com/v1</gw2rest>
+    </endpoints>
+    <application>
+        <timers>
+            <liveupdates>10</liveupdates>
+            <contentupdates>300</contentupdates>
+        </timers>
+        <staticdata>./import</staticdata>
+    </application>
+    <cluster>
+        <name>gw2live</name>
+        <password>gw2live</password>
+        <!--interface>127.0.0.1</interface-->
+        <port>5801</port>
+        <multicast>
+            <group>224.2.2.3</group>
+            <port>58011</port>
+        </multicast>
+    </cluster>
+    <statistics>
+        <statements>
+            <statement>
+                <name>EventCounter</name>
+                <epl>select (select count(*) from WvwEvent.win:time(60)) as wvwevents, (select count(*) from ChatMessage.win:time(60)) as chatevents, (select count(*) from PlayerLocation.win:time(60)) as plevents, count(*) as pveevents from PveEvent.win:time(60) output last every 10 seconds</epl>
+                <output>wvwevents,pveevents,chatevents,plevents</output>
+            </statement>
+        </statements>
+        <threadpools>
+            <inbound>0</inbound>
+            <outbound>0</outbound>
+            <route>0</route>
+            <timer>0</timer>
+        </threadpools>
+    </statistics>
+</config>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>GuildWars 2 Dynamic Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Guildwars 2 map with live dynamic events in PvE and WvW mode">
+        <meta name="keywords" content="guildwars 2, gw2, map, live, dynamic events, pve, wvw, zyclonite, bauershell, statistic, match, world, chat, player, game">
+        <meta name="author" content="zyclonite networx">
+
+        <link href="css/gw2live.min.css" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+          <script src="js/html5shiv.js"></script>
+        <![endif]-->
+
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+        <link rel="shortcut icon" href="favicon.ico">
+    </head>
+
+    <body class="graybg">
+
+        <div id="wrap">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="brand" href="/">gw2map.com</a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li class="divider-vertical"></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">EU Worlds <b class="caret"></b></a>
+                                    <ul id="euworldselect" class="dropdown-menu">
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">US Worlds <b class="caret"></b></a>
+                                    <ul id="usworldselect" class="dropdown-menu">
+                                    </ul>
+                                </li>
+                                <li id="mwvw" class="matchtype active"><a href="#wvw">WvW</a></li>
+                                <li id="mpve" class="matchtype"><a href="#pve">PvE</a></li>
+                                <li class="divider-vertical"></li>
+                                <li><a id="aboutBtn" href="#about" data-toggle="modal" data-target="#aboutModal">About</a></li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="content" class="container-fluid">
+                <h2>&nbsp;please select a world</h2><br>
+                &nbsp;&nbsp;<a class="muted" href="download.php" target="_blank">download client for realtime player position update (only WvW)</a><br>
+                &nbsp;&nbsp;<a class="muted" href="http://www.youtube.com/watch?v=YnzsaJsAGRs&hd=1" target="_blank">watch tutorial</a>
+            </div> <!-- /container -->
+
+            <div id="aboutModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="aboutModalLabel">About</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>If you like our site please support us</h4>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="ZYCQLYNAW8ERS">
+                        <input type="image" src="img/ext/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    </form>
+                    <h5>Development Credits</h5>
+                    <p>Lukas Prettenthaler <a href="http://at.linkedin.com/in/lukasprettenthaler"><img src="img/ext/btn_in_20x15.png" width="20" height="15" alt="View Lukas Prettenthaler's LinkedIn profile" style="vertical-align:middle"></a></p>
+                    <p>Manuel Bauer <a href="http://at.linkedin.com/pub/manuel-bauer/41/532/6aa"><img src="img/ext/btn_in_20x15.png" width="20" height="15" alt="View Manuel Bauer's LinkedIn profile" style="vertical-align:middle"></a></p>
+                    <h5>Guild Wars 2 Content Terms of Use</h5>
+                    <p>&copy; 2012 <a href="http://www.arena.net/" target="_blank">ArenaNet</a>, Inc. All rights reserved. NCsoft, the interlocking NC logo, ArenaNet, Guild Wars, Guild Wars Factions, Guild Wars Nightfall, Guild Wars: Eye of the North, Guild Wars 2, and all associated logos and designs are trademarks or registered trademarks of NCsoft Corporation. All other trademarks are the property of their respective owners.</p>
+                    <h5>gw2map.com is made possible by open source software</h5>
+                    <p>esper <a href="http://esper.codehaus.org/" target="_blank">homepage</a> <a href="http://www.gnu.org/licenses/gpl-2.0.txt" target="_blank">license</a></p>
+                    <p>vert.x <a href="http://vertx.io/" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>Hazelcast <a href="http://www.hazelcast.com/" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>mongoDB <a href="http://www.mongodb.org/" target="_blank">homepage</a> <a href="http://www.gnu.org/licenses/agpl-3.0.txt" target="_blank">license</a></p>
+                    <p>RESTEasy <a href="http://www.jboss.org/resteasy" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>Netty <a href="http://netty.io/" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>HttpClient <a href="http://hc.apache.org/httpcomponents-client-ga/" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>D3.js <a href="http://d3js.org/" target="_blank">homepage</a> <a href="http://opensource.org/licenses/BSD-3-Clause" target="_blank">license</a></p>
+                    <p>backbone.js <a href="http://backbonejs.org/" target="_blank">homepage</a> <a href="http://opensource.org/licenses/MIT" target="_blank">license</a></p>
+                    <p>sockJS client <a href="https://github.com/sockjs/sockjs-client" target="_blank">homepage</a> <a href="http://opensource.org/licenses/MIT" target="_blank">license</a></p>
+                    <p>Bootstrap <a href="http://twitter.github.io/bootstrap/" target="_blank">homepage</a> <a href="http://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank">license</a></p>
+                    <p>jQuery <a href="http://jquery.com/" target="_blank">homepage</a> <a href="http://opensource.org/licenses/MIT" target="_blank">license</a></p>
+                    <p>perfect-scrollbar <a href="http://noraesae.github.io/perfect-scrollbar/" target="_blank">homepage</a> <a href="http://opensource.org/licenses/MIT" target="_blank">license</a></p>
+                    <h5>&copy; 2013 by <a href="http://zyclonite.net" target="_blank">zyclonite networx</a></h5>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+            <div id="feedbackModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="feedbackModalLabel">Request Feature / Report Bug</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="feedback" name="feedback" novalidate>
+                        <label class="label" for="name">Your Name</label><br>
+                        <input type="text" name="name" class="input-xlarge" required><br>
+                        <label class="label" for="email">Your E-mail</label><br>
+                        <input type="email" name="email" class="input-xlarge" required><br>
+                        <label class="label" for="message">Enter a Message</label><br>
+                        <textarea name="message" class="input-xlarge" required></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="feedbackBtn" class="btn btn-success">Send</button>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+            <div id="warroomModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="warroomModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="warroomModalLabel">WarRoom Setup</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="feedback" name="warroom" novalidate>
+                        <label class="label" for="nickname">Nickname</label><br>
+                        <input id="nickname" type="text" name="nickname" class="input-xlarge" required>
+                        <span class="help-inline">required</span><br>
+                        <label class="label" for="channel">Channel</label><br>
+                        <input id="channel" type="text" pattern="^([0-9]){13}$" data-validation-pattern-message="Must be a number having 13 digits" name="channel" class="input-xlarge" required>
+                        <span class="help-inline">only numbers, 13 digits long</span><br>
+                        <p class="text-info">Select a world in WvW mode and have your friends join your WarRoom by only sharing the URL</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="warroomBtn" class="btn btn-success">Join</button>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+            <div id="push"></div>
+        </div>
+
+        <div id="footer" class="graybg">
+            <div class="container">
+                <div class="pull-left">
+                    <button data-toggle="modal" data-target="#feedbackModal" class="btn btn-inverse btn-small"><i class="icon-envelope icon-white"></i></button>
+                    <button id="warroomConfig" data-toggle="modal" data-target="#warroomModal" class="btn btn-inverse btn-small"><i class="icon-globe icon-white"/></i> WarRoom</button>
+                    <strong id="thanks" class="text-success hide"></strong>
+                </div>
+                <div class="btn-group language pull-right">
+                    <button id="len" class="btn btn-inverse btn-small active" disabled="disabled"><img src='img/flags/en.png'/></button>
+                    <button id="lfr" class="btn btn-inverse btn-small"><img src='img/flags/fr.png'/></button>
+                    <button id="lde" class="btn btn-inverse btn-small"><img src='img/flags/de.png'/></button>
+                    <button id="les" class="btn btn-inverse btn-small"><img src='img/flags/es.png'/></button>
+                </div>
+            </div>
+        </div>
+        <script src="js/gw2live.min.js"></script>
+        <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function() {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-25890999-2', 'gw2map.com');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>

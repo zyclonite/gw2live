@@ -1,0 +1,12 @@
+changes to the twitter-bootstrap scripts:
+@import url(Alef.css);
+replace all font-family with Alef
+
+
+scaling coords how to:
+wvw: a=5196, b=8478, scale=3.97
+pve: a=148, b=6656, scale=11.94
+
+e.g.: Palace Waypoint (pve) x=11268 y=10809.3
+      x'=(x-a)/scale  y'=(y-b)/scale
+      x'=931.3233     y'=347,8476

@@ -1,0 +1,103 @@
+html,
+body {
+    height: 100%;
+}
+
+#console {
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 6px 6px 0px 0px;
+    border-radius: 6px 6px 0px 0px;    
+    display: block;
+    z-index: 101;
+    overflow: hidden;
+    text-align: justify;
+    position: fixed;
+    color: white;
+    bottom: 0px;
+    left: 50%;
+    height: 120px;
+    width: 600px;
+    margin-left: -300px;
+    text-shadow: aqua 0.1em 0.1em 0.2em;
+    background: rgba(0,0,0, 0.6);
+}
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0px auto -30px;
+}
+
+#push,
+#footer {
+    height: 30px;
+    position: relative;
+    z-index: 150;
+}
+
+#footer {
+    background-color: #1b1b1b;
+    background-image: -moz-linear-gradient(top,#222,#111);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#222),to(#111));
+    background-image: -webkit-linear-gradient(top,#222,#111);
+    background-image: -o-linear-gradient(top,#222,#111);
+    background-image: linear-gradient(to bottom,#222,#111);
+    background-repeat: repeat-x;
+    border-color: #252525;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222',endColorstr='#ff111111',GradientType=0);
+}
+
+.graybg {
+    background-color: #1b1b1b;
+}
+
+.container .language {
+    margin: 2px 0px;
+}
+
+.dropdown-backdrop {
+    /* bugfix for bootstrap version 2.3.2 */
+    position: static;
+}
+
+#admincontainer {
+    padding-top: 60px;
+}
+
+#wrap > .container-fluid {
+    position: relative;
+    background-color: #1b1b1b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 40px;
+    margin-bottom: -6px;
+}
+
+@media (max-width: 979px) {
+    #admincontainer {
+        padding-top: 0px;
+    }
+
+    #wrap > .container-fluid {
+        padding-top: 0px;
+    }
+
+    .navbar-fixed-top {
+        margin-bottom: 0px;
+    }
+}
+
+@media (max-width: 767px) {
+    #wrap > .container-fluid {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
