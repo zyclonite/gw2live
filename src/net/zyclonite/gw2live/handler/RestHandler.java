@@ -185,7 +185,7 @@ public class RestHandler implements Handler<HttpServerRequest> {
                     if (req.params().contains("channel")) {
                         output = mapper.writeValueAsString(db.findChatMessages(req.params().get("channel")));
                     } else {
-                        output = mapper.writeValueAsString(db.findChatMessages());
+                        output = "{\"error\":\"missing channel parameter\"}";
                     }
                     break;
                 case "pveeventdetails":
