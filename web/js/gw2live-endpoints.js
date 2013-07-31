@@ -37,12 +37,14 @@ $(function() {
             };
 
             subscription.sock.onclose = function() {
+                if(subscription.connected === true) {
+                    setTimeout(function() {
+                        subscription.reconnect();
+                    }, 5000);
+                }
                 subscription.connected = false;
                 subscription.stop();
                 console.log('close');
-                setTimeout(function(){
-                    subscription.reconnect();
-                }, 5000);
             };
         }
     };
