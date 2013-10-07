@@ -7,11 +7,7 @@
         <cross-domain-policy>http://gw2map.com</cross-domain-policy>
     </webservice>
     <mongodb>
-        <hostname>127.0.0.1</hostname>
-        <port>27017</port>
-        <username></username>
-        <password></password>
-        <database>gw2live</database>
+        <uri>mondodb://127.0.0.1:27017/gw2live</uri>
     </mongodb>
     <endpoints>
         <oauth>https://oauth.guildwars2.com/login</oauth>

@@ -12,9 +12,9 @@ package net.zyclonite.gw2live.service;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
-import com.mongodb.MongoOptions;
-import com.mongodb.ServerAddress;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,29 +76,26 @@ public final class MongoDB {
 
     private MongoDB() {
         final AppConfig config = AppConfig.getInstance();
-        final String dbhostname = config.getString("mongodb.hostname", "127.0.0.1");
-        final int dbport = config.getInt("mongodb.port", 27017);
-        final String dbusername = config.getString("mongodb.username", "");
-        final String dbpassword = config.getString("mongodb.password", "");
-        final String databasename = config.getString("mongodb.database", "gw2live");
+        final String uri = config.getString("mongodb.uri", "mongodb://127.0.0.1:27017/gw2live");
         statssize = config.getLong("mongodb.statcollsize", 10485760L);//in bytes 1048576L=1MB, 
         chatsize = config.getLong("mongodb.chatcollsize", 104857600L);//in bytes 1048576L=1MB, 
         statscolls = new HashMap<>();
 
         try {
-            final MongoOptions options = new MongoOptions();
-            options.autoConnectRetry = true;
-            options.maxAutoConnectRetryTime = 15; //s
-            options.connectTimeout = 10000; //ms
-            options.socketTimeout = 30000; //ms
-            options.socketKeepAlive = false;
-            options.connectionsPerHost = 10;
-            options.threadsAllowedToBlockForConnectionMultiplier = 5;
-            options.maxWaitTime = 120000; //ms
-            final Mongo mongo = new Mongo(new ServerAddress(dbhostname, dbport), options);
-            database = mongo.getDB(databasename);
+            final MongoClientOptions.Builder options = new MongoClientOptions.Builder();
+            options.autoConnectRetry(true);
+            options.maxAutoConnectRetryTime(15); //s
+            options.connectTimeout(10000); //ms
+            options.socketTimeout(30000); //ms
+            options.socketKeepAlive(false);
+            options.connectionsPerHost(10);
+            options.threadsAllowedToBlockForConnectionMultiplier(5);
+            options.maxWaitTime(120000); //ms
+            final MongoClientURI mongouri = new MongoClientURI(uri, options);
+            final MongoClient mongo = new MongoClient(mongouri);
+            database = mongo.getDB(mongouri.getDatabase());
 
-            if ((dbusername != null) && (!dbusername.trim().isEmpty()) && (!database.authenticate(dbusername, dbpassword.toCharArray()))) {
+            if ((mongouri.getUsername() != null) && (!mongouri.getUsername().trim().isEmpty()) && (!database.authenticate(mongouri.getUsername(), mongouri.getPassword()))) {
                 throw new Exception("Unable to authenticate with MongoDB server.");
             }
             initCollections();
