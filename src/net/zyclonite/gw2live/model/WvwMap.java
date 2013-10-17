@@ -20,6 +20,7 @@ public class WvwMap {
     private String _type;
     private List<Long> _scores;
     private List<WvwObjective> _objectives;
+    private List<Bonuses> _bonuses;
 
     public String getType() {
         return _type;
@@ -43,5 +44,13 @@ public class WvwMap {
 
     public void setObjectives(final List<WvwObjective> objectives) {
         this._objectives = objectives;
+    }
+
+    public List<Bonuses> getBonuses() {
+        return _bonuses;
+    }
+
+    public void setBonuses(final List<Bonuses> bonuses) {
+        this._bonuses = bonuses;
     }
 }
