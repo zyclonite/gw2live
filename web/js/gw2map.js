@@ -23,15 +23,18 @@ myDate.set = function(UTC_msec) {
         return;
     myDate.offset = UTC_msec - new Date().valueOf();
 };
-myDate.now = function() {
+myDate.serverNow = function() {
     var time = new Date();
     time.setTime(myDate.offset + time.getTime());
     return time;
 };
-myDate.time = function(timestamp) {
-    var time = new Date(timestamp);
-    time.setTime(myDate.offset + time.getTime());
+myDate.localTime = function(serverTimestamp) {
+    var time = new Date(serverTimestamp);
+    time.setTime(time.getTime() - myDate.offset);
     return time;
+};
+myDate.localNow = function () {
+    return new Date();
 };
 
 
@@ -346,7 +349,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     mapWvw.removeOldPlayers = function () {
         var allplayers, now;
         
-        now = myDate.now();
+        now = myDate.serverNow();
         
         allplayers = d3.selectAll(".players");
         allplayers.each(function(d, i){
@@ -982,7 +985,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     eventbox.date = function() {
         var currentTime, hours, minutes, seconds;
 
-        currentTime = myDate.now();
+        currentTime = myDate.localNow();
         hours = currentTime.getHours();
         minutes = currentTime.getMinutes();
         seconds = currentTime.getSeconds();
@@ -1052,7 +1055,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     detailsPanel.date = function(forDate) {
         var time, hours, minutes, seconds, day, month;
 
-        time = myDate.time(forDate);
+        time = myDate.localTime(forDate);
         hours = time.getHours();
         minutes = time.getMinutes();
         seconds = time.getSeconds();
@@ -1591,7 +1594,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     wvwEvents.calculateTimer = function(o) {
         var date, remainingTime;
 
-        date = myDate.now();
+        date = myDate.serverNow();
         remainingTime = (o.timestamp + configuration.protectiontime) - date.getTime();
 
         if (remainingTime > 1 && o.timeState !== wvwEvents.timeState.INVULNERABLE) {
