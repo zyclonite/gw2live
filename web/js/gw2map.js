@@ -1594,7 +1594,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
         date = myDate.now();
         remainingTime = (o.timestamp + configuration.protectiontime) - date.getTime();
 
-        if (remainingTime > 1) {
+        if (remainingTime > 1 && o.timeState !== wvwEvents.timeState.INVULNERABLE) {
             o.timeState = wvwEvents.timeState.INVULNERABLE;
 
             browserEvents.timers.push(setTimeout(function() {
