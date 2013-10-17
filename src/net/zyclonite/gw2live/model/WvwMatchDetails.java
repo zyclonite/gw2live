@@ -20,6 +20,7 @@ public class WvwMatchDetails {
     private String _match_id;
     private List<Long> _scores;
     private List<WvwMap> _maps;
+    private List<Bonuses> bonuses;
 
     public String getMatch_id() {
         return _match_id;
@@ -43,5 +44,13 @@ public class WvwMatchDetails {
 
     public void setMaps(final List<WvwMap> maps) {
         this._maps = maps;
+    }
+
+    public List<Bonuses> getBonuses() {
+        return bonuses;
+    }
+
+    public void setBonuses(final List<Bonuses> bonuses) {
+        this.bonuses = bonuses;
     }
 }
