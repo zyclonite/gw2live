@@ -255,8 +255,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
         container.append("image")
                 .data([o])
                 .attr("id", "o_image_" + o.id)
-                .attr("xlink:href", "img/wvwicons/" +
-                ((o.type === "Castle" || o.type === "Tower" || o.type === "Keep") ? o.type : "Camp") +
+                .attr("xlink:href", "img/wvwicons/" + o.type +
                 "_" + o.objective.owner + ".png")
                 .attr("width", imgsize)
                 .attr("height", imgsize)
@@ -1269,7 +1268,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
 
         if (wvwEvents.objectiveTypes === null) {
             wvwEvents.objectiveTypes = undefined;
-            $.getJSON(configuration.rootUrl + "rest/wvwobjectivenames")
+            $.getJSON(configuration.rootUrl + "rest/wvwobjectivedetails")
                     .done(function(e) {
                 wvwEvents.objectiveTypes = e;
                 application.loadWvwBootstrapData();
@@ -1504,10 +1503,10 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     wvwEvents.getObjectiveType = function(id) {
         var result;
 
-        id = id + "";
+        id = parseInt(id,10);
         wvwEvents.objectiveTypes.forEach(function(e) {
             if (e.id === id) {
-                result = e.name;
+                result = e.type;
                 return;
             }
         });
@@ -1594,6 +1593,10 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     wvwEvents.calculateTimer = function(o) {
         var date, remainingTime;
 
+        if(o.type !== "Camp" || o.type !== "Keep" || o.type !== "Tower" || o.type !== "Castle") {
+            return;
+        }
+        
         date = myDate.serverNow();
         remainingTime = (o.timestamp + configuration.protectiontime) - date.getTime();
 
