@@ -634,11 +634,11 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     };
 
     mapWvw.updateObjective = function(o) {
-        var obj, data;
+        var obj, data, type;
 
         if (!this.ready)
             return;
-        o.type = wvwEvents.getObjectiveType(o.id);
+        type = wvwEvents.getObjectiveType(o.objective_id);
 
         obj = d3.select("#o_image_" + o.objective_id);
 
@@ -646,8 +646,7 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
         data[0].objective = o;
 
         obj.attr("xlink:href", "img/wvwicons/" +
-                ((o.type === "Castle" || o.type === "Tower" || o.type === "Keep") ? o.type : "Camp") +
-                "_" + o.owner + ".png")
+                type + "_" + o.owner + ".png")
                 .data(data);
 
         wvwEvents.calculateTimer(o);
@@ -1593,7 +1592,8 @@ gw2map.init = function(container, worldId, mode, lang, nickname, channel) {
     wvwEvents.calculateTimer = function(o) {
         var date, remainingTime;
 
-        if(o.type !== "Camp" || o.type !== "Keep" || o.type !== "Tower" || o.type !== "Castle") {
+        type = wvwEvents.getObjectiveType(o.objective_id);
+        if(type !== "Camp" && type !== "Keep" && type !== "Tower" && type !== "Castle") {
             return;
         }
         
