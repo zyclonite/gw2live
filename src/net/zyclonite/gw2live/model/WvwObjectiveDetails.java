@@ -20,6 +20,7 @@ public class WvwObjectiveDetails {
 
     private Long _id;
     private Long _income;
+    private String _type;
 
     public Long getId() {
         return _id;
@@ -35,5 +36,13 @@ public class WvwObjectiveDetails {
 
     public void setIncome(final Long income) {
         this._income = income;
+    }
+
+    public String getType() {
+        return _type;
+    }
+
+    public void setType(final String type) {
+        this._type = type;
     }
 }
