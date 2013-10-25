@@ -113,6 +113,13 @@ public class WvwEvent implements Serializable {
             return false;
         }
         final WvwEvent other = (WvwEvent) obj;
+        //check first for stuff that is not in hashCode()
+        if (!Objects.equals(this._owner, other._owner)) {
+            return false;
+        }
+        if (!Objects.equals(this._owner_guild, other._owner_guild)) {
+            return false;
+        }
         if (!Objects.equals(this._match_id, other._match_id)) {
             return false;
         }
@@ -120,12 +127,6 @@ public class WvwEvent implements Serializable {
             return false;
         }
         if (!Objects.equals(this._objective_id, other._objective_id)) {
-            return false;
-        }
-        if (!Objects.equals(this._owner, other._owner)) {
-            return false;
-        }
-        if (!Objects.equals(this._owner_guild, other._owner_guild)) {
             return false;
         }
         return true;

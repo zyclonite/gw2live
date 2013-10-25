@@ -87,6 +87,10 @@ public class PveEvent implements Serializable {
             return false;
         }
         final PveEvent other = (PveEvent) obj;
+        //check first for stuff that is not in hashCode()
+        if (!Objects.equals(this._state, other._state)) {
+            return false;
+        }
         if (!Objects.equals(this._world_id, other._world_id)) {
             return false;
         }
@@ -94,9 +98,6 @@ public class PveEvent implements Serializable {
             return false;
         }
         if (!Objects.equals(this._event_id, other._event_id)) {
-            return false;
-        }
-        if (!Objects.equals(this._state, other._state)) {
             return false;
         }
         return true;
