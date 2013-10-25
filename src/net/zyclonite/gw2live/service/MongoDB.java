@@ -139,9 +139,11 @@ public final class MongoDB {
     private void ensureIndexes() {
         pveevents.ensureIndex(new BasicDBObject("world_id", 1));
         pveevents.ensureIndex(new BasicDBObject("world_id", 1).append("map_id", 1));
+        pveevents.ensureIndex(new BasicDBObject("world_id", 1).append("map_id", 1).append("event_id", 1));
 
         wvwevents.ensureIndex(new BasicDBObject("match_id", 1));
         wvwevents.ensureIndex(new BasicDBObject("match_id", 1).append("map_type", 1));
+        wvwevents.ensureIndex(new BasicDBObject("match_id", 1).append("map_type", 1).append("objective_id", 1));
 
         pveeventnames.ensureIndex(new BasicDBObject("lang", 1));
         pveeventnames.ensureIndex(new BasicDBObject("id", 1).append("lang", 1), new BasicDBObject("unique", true));
