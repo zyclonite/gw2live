@@ -61,6 +61,9 @@ public class Application {
         hazelcast.getChatTopic().addMessageListener(new ChatListener());
         hazelcast.getPlayerLocationTopic().addMessageListener(new PlayerLocationListener());
 
+        LocalCache.PVE_ENABLED = config.getBoolean("application.pve-enabled", false);
+        LocalCache.WVW_ENABLED = config.getBoolean("application.wvw-enabled", false);
+        
         loadStaticData();
         bootstrapApplication();
         initHandlers();

@@ -32,6 +32,8 @@ public class LocalCache {
     public final static List<Subscriber> SUBSCRIBER = Collections.synchronizedList(new ArrayList<Subscriber>());
     public final static List<StatisticUpdateListener> STATEMENTS = new ArrayList<>();
     public static boolean MASTER = true;
+    public static boolean WVW_ENABLED = false;
+    public static boolean PVE_ENABLED = false;
     public final static String[] LANGUAGES = {"en", "de", "es", "fr"};
     public final static String EVENTS_PVE_PREFIX = "events.pve.";
     public final static String EVENTS_WVW_PREFIX = "events.wvw.";

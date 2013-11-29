@@ -8,10 +8,12 @@
  * Developer: Lukas Prettenthaler
  */
 $(function() {
-    var AppRouter, world, matchtype, nickname, channel, language, loadWorldNames, init, app_router, selectWorld, fixnavbar;
+    var AppRouter, world, matchtype, nickname, channel, language, loadWorldNames, init, app_router, selectWorld, fixnavbar, pve_enabled, wvw_enabled;
     world = "0000";
     matchtype = "wvw";
     language = "en";
+    pve_enabled = true;
+    wvw_enabled = true;
     if (localStorage["nickname"]) {
         nickname = localStorage["nickname"];
     }else{
@@ -37,6 +39,14 @@ $(function() {
                 }
             });
             $('.worldselect').click(selectWorld);
+        });
+    };
+
+    loadAppConfig = function() {
+        return $.getJSON('rest/appconfig')
+                .done(function(config) {
+            pve_enabled = config.pve;
+            wvw_enabled = config.wvw;
         });
     };
 
@@ -141,6 +151,8 @@ $(function() {
             "pve:wrld": "loadPveWorld"
         },
         loadWvwWorldAndChannelAndLanguage: function(wrld, chnnl, lang) {
+            if(!wvw_enabled)
+                return;
             matchtype = "wvw";
             language = lang;
             world = wrld;
@@ -150,6 +162,8 @@ $(function() {
             fixnavbar();
         },
         loadWvwWorldAndChannel: function(wrld, chnnl) {
+            if(!wvw_enabled)
+                return;
             matchtype = "wvw";
             language = "en";
             world = wrld;
@@ -159,6 +173,8 @@ $(function() {
             fixnavbar();
         },
         loadWvwWorldAndLanguage: function(wrld, lang) {
+            if(!wvw_enabled)
+                return;
             matchtype = "wvw";
             language = lang;
             world = wrld;
@@ -166,6 +182,8 @@ $(function() {
             fixnavbar();
         },
         loadWvwWorld: function(wrld) {
+            if(!wvw_enabled)
+                return;
             matchtype = "wvw";
             language = "en";
             world = wrld;
@@ -173,6 +191,8 @@ $(function() {
             fixnavbar();
         },
         loadPveWorldAndLanguage: function(wrld, lang) {
+            if(!pve_enabled)
+                return;
             matchtype = "pve";
             language = lang;
             world = wrld;
@@ -180,6 +200,8 @@ $(function() {
             fixnavbar();
         },
         loadPveWorld: function(wrld) {
+            if(!pve_enabled)
+                return;
             matchtype = "pve";
             language = "en";
             world = wrld;
@@ -190,9 +212,17 @@ $(function() {
 
     $(".feedback > input,select,textarea").jqBootstrapValidation();
 
-    $.when(loadWorldNames(), myDate.calibrate()).done(function() {
+    $.when(loadWorldNames(), loadAppConfig(), myDate.calibrate()).done(function() {
         $('#nickname').val(nickname);
         $('#channel').val(channel);
+        if(!wvw_enabled){
+            matchtype = "pve";
+            $('#mwvw').remove();
+        }
+        if(!pve_enabled) {
+            $('#mpve').remove();
+        }
+        fixnavbar();
         app_router = new AppRouter;
         Backbone.history.start();
     });

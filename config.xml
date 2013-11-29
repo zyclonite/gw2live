@@ -19,6 +19,8 @@
             <contentupdates>300</contentupdates>
         </timers>
         <staticdata>./import</staticdata>
+        <wvw-enabled>true</wvw-enabled>
+        <pve-enabled>true</pve-enabled>
     </application>
     <cluster>
         <name>gw2live</name>

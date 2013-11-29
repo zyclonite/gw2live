@@ -17,6 +17,7 @@ import net.zyclonite.gw2live.model.GuildDetails;
 import net.zyclonite.gw2live.service.Gw2Client;
 import net.zyclonite.gw2live.service.MongoDB;
 import net.zyclonite.gw2live.util.AppConfig;
+import net.zyclonite.gw2live.util.LocalCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.vertx.java.core.Handler;
@@ -52,6 +53,10 @@ public class RestHandler implements Handler<HttpServerRequest> {
         String output;
         try {
             switch (endpoint) {
+                case "appconfig":
+                    req.response().putHeader("Cache-Control", "max-age=3600");//cache for 1h
+                    output = "{\"wvw\":"+LocalCache.WVW_ENABLED+",\"pve\":"+LocalCache.PVE_ENABLED+"}";
+                    break;
                 case "servertime":
                     req.response().putHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
                     req.response().putHeader("Pragma", "no-cache");

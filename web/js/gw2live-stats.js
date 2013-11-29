@@ -72,6 +72,11 @@ $(function() {
 
         data.forEach(function(d) {
             d.timestamp = new Date(d.timestamp);
+            for(var k in d.keyvalues) {
+                if(d.keyvalues[k] <= 0) {
+                    d.keyvalues[k] = 1;
+                }
+            }
         });
 
         eventtypes = color.domain().map(function(name) {
