@@ -9,9 +9,11 @@
  */
 package net.zyclonite.gw2live.service;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
@@ -283,6 +285,12 @@ public final class MongoDB {
         return result;
     }
 
+    public WvwMatch findWvwMatch(final String matchid) {
+        //final List<WvwMatch> result = wvwmatches.find(DBQuery.is("red_world_id", world_id).or(DBQuery.is("blue_world_id", world_id).or(DBQuery.is("green_world_id", world_id)))).toArray();
+        final WvwMatch result = wvwmatches.findOne(DBQuery.is("wvw_match_id", matchid));
+        return result;
+    }
+
     public List<WvwScore> findWvwScores() {
         final List<WvwScore> result = wvwscores.find().toArray();
         return result;
@@ -373,6 +381,35 @@ public final class MongoDB {
     public List<GwMap> findMap(final String map) {
         final List<GwMap> result = maps.find().is("map_id", map).toArray();
         return result;
+    }
+
+    public String getTopGuilds(final String matchid) {
+        final WvwMatch wvwmatch = findWvwMatch(matchid);
+        if(wvwmatch == null){
+            return "[]";
+        }
+
+        final DBObject matchFields = new BasicDBObject("timestamp", new BasicDBObject("$gt", wvwmatch.getStart_time()));
+        matchFields.put("timestamp", new BasicDBObject("$lt", wvwmatch.getEnd_time()));
+        matchFields.put("match_id", matchid);
+        final DBObject match = new BasicDBObject("$match", matchFields);
+
+        final DBObject projectFields = new BasicDBObject("guild_id", 1);
+        projectFields.put("holdtime", 1);
+        projectFields.put("_id", 0);
+        final DBObject project = new BasicDBObject("$project", projectFields);
+
+        final DBObject groupFields = new BasicDBObject("_id", "$guild_id");
+        groupFields.put("holdtime", new BasicDBObject("$sum", "$holdtime"));
+        groupFields.put("count", new BasicDBObject("$sum", 1));
+        final DBObject group = new BasicDBObject("$group", groupFields);
+
+        final DBObject sort = new BasicDBObject("$sort", new BasicDBObject("holdtime", -1));
+
+        final DBObject limit = new BasicDBObject("$limit", 10);
+
+        final AggregationOutput output = wvwguildstatistics.getDbCollection().aggregate(match, project, group, sort, limit);
+        return output.results().toString();
     }
 
     public void saveStats(final String coll, final List<StatsItem> items) {
@@ -506,8 +543,8 @@ public final class MongoDB {
     }
 
     public void saveWvwGuildStatistics(final WvwGuildStatistic statsentry) {
-            wvwguildstatistics.insert(statsentry);
-            LOG.trace("saved wvwguildstatistic " + statsentry.getGuild_id() + " to mongodb");
+        wvwguildstatistics.insert(statsentry);
+        LOG.trace("saved wvwguildstatistic " + statsentry.getGuild_id() + " to mongodb");
     }
 
     public static MongoDB getInstance() {

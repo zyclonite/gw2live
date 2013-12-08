@@ -211,6 +211,15 @@ public class RestHandler implements Handler<HttpServerRequest> {
                         output = "{\"error\":\"missing map parameter\"}";
                     }
                     break;
+                case "topguilds":
+                    req.response().putHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+                    req.response().putHeader("Pragma", "no-cache");
+                    if (req.params().contains("match")) {
+                        output = db.getTopGuilds(req.params().get("match"));
+                    }else{
+                        output = "{\"error\":\"missing match id\"}";
+                    }
+                    break;
                 default:
                     output = "{\"error\":\"wrong endpoint\"}";
             }
