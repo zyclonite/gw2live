@@ -30,6 +30,7 @@ public class WvwEvent implements Serializable {
     private List<Long>_map_scores;
     private List<Long> _match_scores;
     private Date _timestamp;
+    private Date _guild_timestamp;
 
     public String getMatch_id() {
         return _match_id;
@@ -93,6 +94,14 @@ public class WvwEvent implements Serializable {
 
     public void setTimestamp(final Date timestamp) {
         this._timestamp = timestamp;
+    }
+
+    public Date getGuild_timestamp() {
+        return _guild_timestamp;
+    }
+
+    public void setGuild_timestamp(final Date timestamp) {
+        this._guild_timestamp = timestamp;
     }
 
     @Override

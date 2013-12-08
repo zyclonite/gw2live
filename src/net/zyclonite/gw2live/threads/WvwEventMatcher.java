@@ -89,6 +89,13 @@ public class WvwEventMatcher implements Callable<Boolean> {
                         }else{
                             wvwevent.setTimestamp(timestamp); //only set timestamp for owner changed events
                         }
+                        if (objective.getOwner_guild() != null) {
+                            if(oldWveevent != null && wvwevent.getOwner_guild().equalsIgnoreCase(oldWveevent.getOwner_guild())){
+                                wvwevent.setGuild_timestamp(oldWveevent.getGuild_timestamp());
+                            }else{
+                                wvwevent.setGuild_timestamp(timestamp); //only set timestamp for owner_guild changed events
+                            }
+                        }
                         wvwEventCache.putAsync(wvwevent.hashCode(), wvwevent);
                         esper.sendEvent(wvwevent);
                         wvwevents.add(wvwevent);
