@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 public class GuildStatisticUpdateListener extends EplUpdateListener {
 
     private static final Log LOG = LogFactory.getLog(GuildStatisticUpdateListener.class);
-    private static final String EPL = "select n.timestamp as ntime, o.timestamp as otime, o.owner_guild as guild, o.match_id as match, o.map_type as map, o.objective_id as objective from pattern [ every o=WvwEvent -> every n=WvwEvent(match_id=o.match_id, map_type=o.map_type, objective_id=o.objective_id) ] where n.owner != o.owner and o.owner_guild != null";
+    private static final String EPL = "select n.timestamp as ntime, o.timestamp as otime, o.owner_guild as guild, o.match_id as match, o.map_type as map, o.objective_id as objective from pattern [ every o=WvwEvent -> every n=WvwEvent(match_id=o.match_id, map_type=o.map_type, objective_id=o.objective_id) ] where n.owner != o.owner and o.owner_guild is not null";
     private final MongoDB db;
 
     public GuildStatisticUpdateListener() {
