@@ -84,7 +84,7 @@ public class WvwEventMatcher implements Callable<Boolean> {
                     }
                     final WvwEvent oldWveevent = wvwEventCache.get(wvwevent.hashCode());
                     if (!wvwevent.equals(oldWveevent)) {
-                        if(wvwevent.getOwner().equalsIgnoreCase(oldWveevent.getOwner())){
+                        if(oldWveevent != null && wvwevent.getOwner().equalsIgnoreCase(oldWveevent.getOwner())){
                             wvwevent.setTimestamp(oldWveevent.getTimestamp());
                         }else{
                             wvwevent.setTimestamp(timestamp); //only set timestamp for owner changed events

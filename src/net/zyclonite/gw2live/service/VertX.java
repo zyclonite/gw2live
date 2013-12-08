@@ -32,7 +32,7 @@ import org.vertx.java.core.sockjs.SockJSSocket;
 public class VertX {
 
     private static final Log LOG = LogFactory.getLog(VertX.class);
-    private static VertX instance;
+    private static final VertX instance;
     private final HttpServer server;
     private final RouteMatcher routeMatcher;
     private final Vertx vertx;

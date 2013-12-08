@@ -10,7 +10,7 @@
 package net.zyclonite.gw2live.timer;
 
 import net.zyclonite.gw2live.Application;
-import net.zyclonite.gw2live.listener.StatisticUpdateListener;
+import net.zyclonite.gw2live.util.EplUpdateListener;
 import net.zyclonite.gw2live.util.LocalCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,7 +59,7 @@ public class BootstrapTimer extends UpdateTimer implements Handler<Long> {
     }
 
     private void startStatisticListeners() {
-        for (final StatisticUpdateListener statement : LocalCache.STATEMENTS) {
+        for (final EplUpdateListener statement : LocalCache.STATEMENTS) {
             statement.start();
         }
     }

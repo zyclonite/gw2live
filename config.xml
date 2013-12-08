@@ -7,7 +7,7 @@
         <cross-domain-policy>http://gw2map.com</cross-domain-policy>
     </webservice>
     <mongodb>
-        <uri>mondodb://127.0.0.1:27017/gw2live</uri>
+        <uri>mongodb://127.0.0.1:27017/gw2live</uri>
     </mongodb>
     <endpoints>
         <oauth>https://oauth.guildwars2.com/login</oauth>

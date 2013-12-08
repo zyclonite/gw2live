@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 public class EsperEngine {
 
     private static final Log LOG = LogFactory.getLog(EsperEngine.class);
-    private static EsperEngine instance;
+    private static final EsperEngine instance;
     private static AppConfig config;
     private final EPServiceProvider epService;
 

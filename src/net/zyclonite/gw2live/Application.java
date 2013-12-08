@@ -19,6 +19,7 @@ import net.zyclonite.gw2live.handler.SockJsHandler;
 import net.zyclonite.gw2live.handler.StatRestHandler;
 import net.zyclonite.gw2live.listener.ChatListener;
 import net.zyclonite.gw2live.listener.ClusterListener;
+import net.zyclonite.gw2live.listener.GuildStatisticUpdateListener;
 import net.zyclonite.gw2live.listener.PlayerLocationListener;
 import net.zyclonite.gw2live.listener.StatisticUpdateListener;
 import net.zyclonite.gw2live.model.Subscriber;
@@ -28,6 +29,7 @@ import net.zyclonite.gw2live.timer.BootstrapTimer;
 import net.zyclonite.gw2live.timer.LessFrequentTimer;
 import net.zyclonite.gw2live.timer.LiveEventTimer;
 import net.zyclonite.gw2live.util.AppConfig;
+import net.zyclonite.gw2live.util.EplUpdateListener;
 import net.zyclonite.gw2live.util.LocalCache;
 import net.zyclonite.gw2live.util.StaticDataLoader;
 import org.apache.commons.logging.Log;
@@ -63,11 +65,12 @@ public class Application {
 
         LocalCache.PVE_ENABLED = config.getBoolean("application.pve-enabled", false);
         LocalCache.WVW_ENABLED = config.getBoolean("application.wvw-enabled", false);
-        
+
         loadStaticData();
         bootstrapApplication();
         initHandlers();
         initStatements();
+        initWvwGuildStatements();
     }
 
     private void loadStaticData() {
@@ -123,12 +126,17 @@ public class Application {
         }
     }
 
+    private void initWvwGuildStatements() {
+        final GuildStatisticUpdateListener statement = new GuildStatisticUpdateListener();
+        LocalCache.STATEMENTS.add(statement);
+    }
+
     private void addStatement(final String name, final String epl, final String[] output) {
         final StatisticUpdateListener statement = new StatisticUpdateListener(name, output, epl);
         LocalCache.STATEMENTS.add(statement);
     }
-    
-    private void sendAllConnectedUsers(final String message){
+
+    private void sendAllConnectedUsers(final String message) {
         final JsonObject response = new JsonObject();
         final JsonObject json = new JsonObject();
         json.putString("message", message);
@@ -174,7 +182,7 @@ public class Application {
             VertX.getInstance().cancelTimer(timer);
         }
         LocalCache.TIMERS.clear();
-        for (final StatisticUpdateListener statement : LocalCache.STATEMENTS) {
+        for (final EplUpdateListener statement : LocalCache.STATEMENTS) {
             statement.stop();
         }
         LOG.debug("Timers cleared");
@@ -184,7 +192,7 @@ public class Application {
         final AppConfig config = AppConfig.getInstance();
         LocalCache.TIMERS.add(VertX.getInstance().setPeriodic(config.getInt("application.timers.liveupdates", 10) * 1000, new LiveEventTimer()));
         LocalCache.TIMERS.add(VertX.getInstance().setPeriodic(config.getInt("application.timers.contentupdates", 30) * 1000, new LessFrequentTimer()));
-        for (final StatisticUpdateListener statement : LocalCache.STATEMENTS) {
+        for (final EplUpdateListener statement : LocalCache.STATEMENTS) {
             statement.start();
         }
         LOG.debug("Timers started");

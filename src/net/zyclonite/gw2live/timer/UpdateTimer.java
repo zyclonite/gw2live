@@ -20,6 +20,7 @@ import net.zyclonite.gw2live.listener.PveEventListener;
 import net.zyclonite.gw2live.listener.WvwEventListener;
 import net.zyclonite.gw2live.model.PveEvent;
 import net.zyclonite.gw2live.model.WvwEvent;
+import net.zyclonite.gw2live.service.EsperEngine;
 import net.zyclonite.gw2live.service.Gw2Client;
 import net.zyclonite.gw2live.service.HazelcastCache;
 import net.zyclonite.gw2live.service.MongoDB;
@@ -40,6 +41,7 @@ public class UpdateTimer {
     private static final Log LOG = LogFactory.getLog(UpdateTimer.class);
     private final MongoDB db;
     private final Gw2Client client;
+    private final EsperEngine esper;
     private final IMap<Integer, PveEvent> pveEventCache;
     private final IMap<Integer, WvwEvent> wvwEventCache;
 
@@ -50,6 +52,7 @@ public class UpdateTimer {
         client = Gw2Client.getInstance();
         pveEventCache = hz.getPveCacheMap();
         wvwEventCache = hz.getWvwCacheMap();
+        esper = EsperEngine.getInstance();
     }
 
     protected void prefillCache() {
@@ -58,6 +61,7 @@ public class UpdateTimer {
             pveevents.batchSize(5000);
             for (final PveEvent pveevent : pveevents) {
                 pveEventCache.put(pveevent.hashCode(), pveevent);
+                esper.sendEvent(pveevent);
             }
             pveevents.close();
         }
@@ -67,6 +71,7 @@ public class UpdateTimer {
             wvwevents.batchSize(5000);
             for (final WvwEvent wvwevent : wvwevents) {
                 wvwEventCache.put(wvwevent.hashCode(), wvwevent);
+                esper.sendEvent(wvwevent);
             }
             wvwevents.close();
         }
@@ -88,7 +93,7 @@ public class UpdateTimer {
                     finished++;
                 }
             } catch (InterruptedException | ExecutionException ex) {
-                LOG.error(ex);
+                LOG.error(ex, ex);
             }
         }
         if (finished < threads.size()) {

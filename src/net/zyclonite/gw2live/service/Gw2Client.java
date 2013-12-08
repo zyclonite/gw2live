@@ -40,7 +40,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 public class Gw2Client {
 
     private static final Log LOG = LogFactory.getLog(Gw2Client.class);
-    private static Gw2Client instance;
+    private static final Gw2Client instance;
     private static AppConfig config;
     private final Gw2RestInterface gw2resource;
     private final ResteasyClient client;

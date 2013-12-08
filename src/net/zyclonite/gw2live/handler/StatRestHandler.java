@@ -15,6 +15,7 @@ import java.util.Date;
 import net.zyclonite.gw2live.listener.StatisticUpdateListener;
 import net.zyclonite.gw2live.service.MongoDB;
 import net.zyclonite.gw2live.util.AppConfig;
+import net.zyclonite.gw2live.util.EplUpdateListener;
 import net.zyclonite.gw2live.util.LocalCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,15 +54,17 @@ public class StatRestHandler implements Handler<HttpServerRequest> {
             case "list":
                 req.response().putHeader("Cache-Control", "max-age=21600");//cache for 6h
                 final JsonArray response = new JsonArray();
-                for (final StatisticUpdateListener statement : LocalCache.STATEMENTS) {
-                    final JsonObject service = new JsonObject();
-                    service.putString("name", statement.getName().toLowerCase());
-                    final JsonArray out = new JsonArray();
-                    for (final String value : statement.getOutput()) {
-                        out.addString(value);
+                for (final EplUpdateListener statement : LocalCache.STATEMENTS) {
+                    if (statement instanceof StatisticUpdateListener) {
+                        final JsonObject service = new JsonObject();
+                        service.putString("name", statement.getName().toLowerCase());
+                        final JsonArray out = new JsonArray();
+                        for (final String value : ((StatisticUpdateListener)statement).getOutput()) {
+                            out.addString(value);
+                        }
+                        service.putArray("output", out);
+                        response.addObject(service);
                     }
-                    service.putArray("output", out);
-                    response.addObject(service);
                 }
                 output = response.encode();
                 break;

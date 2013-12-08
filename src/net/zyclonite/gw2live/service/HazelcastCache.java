@@ -44,7 +44,7 @@ import org.apache.commons.logging.LogFactory;
 public class HazelcastCache {
 
     private static final Log LOG = LogFactory.getLog(HazelcastCache.class);
-    private static HazelcastCache instance;
+    private static final HazelcastCache instance;
     private static HazelcastInstance cache;
 
     static {

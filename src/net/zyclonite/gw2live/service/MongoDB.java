@@ -29,6 +29,7 @@ import net.zyclonite.gw2live.model.PveEvent;
 import net.zyclonite.gw2live.model.PveEventDetails;
 import net.zyclonite.gw2live.model.StatsItem;
 import net.zyclonite.gw2live.model.WvwEvent;
+import net.zyclonite.gw2live.model.WvwGuildStatistic;
 import net.zyclonite.gw2live.model.WvwMatch;
 import net.zyclonite.gw2live.model.WvwObjectiveDetails;
 import net.zyclonite.gw2live.model.WvwScore;
@@ -47,7 +48,7 @@ import org.mongojack.JacksonDBCollection;
 public final class MongoDB {
 
     private static final Log LOG = LogFactory.getLog(MongoDB.class);
-    private static MongoDB instance;
+    private static final MongoDB instance;
     private DB database;
     private JacksonDBCollection<PveEvent, String> pveevents;
     private JacksonDBCollection<WvwEvent, String> wvwevents;
@@ -66,6 +67,7 @@ public final class MongoDB {
     private JacksonDBCollection<ChatMessage, String> chatmessages;
     private JacksonDBCollection<PveEventDetails, String> pveeventdetails;
     private JacksonDBCollection<GwMap, String> maps;
+    private JacksonDBCollection<WvwGuildStatistic, String> wvwguildstatistics;
     private final Map<String, JacksonDBCollection<StatsItem, String>> statscolls;
     private final long statssize;
     private final long chatsize;
@@ -124,6 +126,7 @@ public final class MongoDB {
         pvecoordinates = JacksonDBCollection.wrap(database.getCollection("pvecoordinates"), Coordinate.class, String.class);
         pveeventdetails = JacksonDBCollection.wrap(database.getCollection("pveeventdetails"), PveEventDetails.class, String.class);
         maps = JacksonDBCollection.wrap(database.getCollection("maps"), GwMap.class, String.class);
+        wvwguildstatistics = JacksonDBCollection.wrap(database.getCollection("wvwguildstatistics"), WvwGuildStatistic.class, String.class);
         final DBCollection chatmessagescoll;
         if (database.collectionExists("chatmessages")) {
             chatmessagescoll = database.getCollection("chatmessages");
@@ -179,6 +182,9 @@ public final class MongoDB {
         pveeventdetails.ensureIndex(new BasicDBObject("event_id", 1), new BasicDBObject("unique", true));
 
         maps.ensureIndex(new BasicDBObject("map_id", 1), new BasicDBObject("unique", true));
+
+        wvwguildstatistics.ensureIndex(new BasicDBObject("guild_id", 1));
+        wvwguildstatistics.ensureIndex(new BasicDBObject("guild_id", 1).append("timestamp", 1));
     }
 
     public void initStatsCollections(final String coll) {
@@ -497,6 +503,11 @@ public final class MongoDB {
             maps.update(DBQuery.is("map_id", map.getMap_id()), map, true, false);
             LOG.trace("saved maps " + map.getMap_id() + " to mongodb");
         }
+    }
+
+    public void saveWvwGuildStatistics(final WvwGuildStatistic statsentry) {
+            wvwguildstatistics.insert(statsentry);
+            LOG.trace("saved wvwguildstatistic " + statsentry.getGuild_id() + " to mongodb");
     }
 
     public static MongoDB getInstance() {
