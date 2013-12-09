@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 public class GuildStatisticUpdateListener extends EplUpdateListener {
 
     private static final Log LOG = LogFactory.getLog(GuildStatisticUpdateListener.class);
-    private static final String EPL = "select o.* from pattern [ every o=WvwEvent -> every n=WvwEvent(match_id=o.match_id, map_type=o.map_type, objective_id=o.objective_id) ] where n.owner_guild != o.owner_guild and o.owner_guild is not null";
+    private static final String EPL = "select o.* from pattern [ every o=WvwEvent -> n=WvwEvent(match_id=o.match_id, map_type=o.map_type, objective_id=o.objective_id, o.owner_guild is not null, owner_guild is not o.owner_guild) ] where o.owner_guild is not null";
     private final MongoDB db;
 
     public GuildStatisticUpdateListener() {
@@ -36,15 +36,15 @@ public class GuildStatisticUpdateListener extends EplUpdateListener {
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
         //TODO: needs threading (nonblocking) + push to eventbus
-        final Date now = new Date();
-        for (final EventBean event : newEvents) {
-            final Date oldtime = (Date) event.get("guild_timestamp");
+        if (newEvents.length > 0) {
+            final Date now = new Date();
+            final Date oldtime = (Date) newEvents[newEvents.length - 1].get("guild_timestamp");
             final WvwGuildStatistic gstats = new WvwGuildStatistic();
-            gstats.setGuild_id(event.get("owner_guild").toString());
+            gstats.setGuild_id((String) newEvents[newEvents.length - 1].get("owner_guild"));
             gstats.setHoldtime(now.getTime() - oldtime.getTime());
-            gstats.setMap_type(event.get("map_type").toString());
-            gstats.setMatch_id(event.get("match_id").toString());
-            gstats.setObjective_id(Long.parseLong(event.get("objective_id").toString()));
+            gstats.setMap_type((String) newEvents[newEvents.length - 1].get("map_type"));
+            gstats.setMatch_id((String) newEvents[newEvents.length - 1].get("match_id"));
+            gstats.setObjective_id((Long) newEvents[newEvents.length - 1].get("objective_id"));
             gstats.setTimestamp(now);
             db.saveWvwGuildStatistics(gstats);
         }
