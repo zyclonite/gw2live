@@ -78,7 +78,7 @@ public class WvwEventMatcher implements Callable<Boolean> {
                     wvwevent.setMatch_id(matchDetails.getMatch_id());
                     wvwevent.setMatch_scores(matchDetails.getScores());
                     if (objective.getOwner_guild() != null) {
-                        if (db.findGuildDetailsById(objective.getOwner_guild()).isEmpty()) {
+                        if (db.findGuildDetailsById(objective.getOwner_guild()) == null) {
                             guildDetails.add(client.getGuildDetails(objective.getOwner_guild()));
                         }
                     }

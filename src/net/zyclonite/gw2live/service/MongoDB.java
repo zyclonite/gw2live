@@ -333,8 +333,8 @@ public final class MongoDB {
         return result;
     }
 
-    public List<GuildDetails> findGuildDetailsById(final String guild_id) {
-        final List<GuildDetails> result = guilddetails.find().is("guild_id", guild_id).toArray();
+    public GuildDetails findGuildDetailsById(final String guild_id) {
+        final GuildDetails result = guilddetails.findOne(DBQuery.is("guild_id", guild_id));
         return result;
     }
 
@@ -504,6 +504,7 @@ public final class MongoDB {
 
     public void saveGuildDetails(final List<GuildDetails> guilds) {
         for (final GuildDetails guild : guilds) {
+            guild.setTimestamp(new Date());
             guilddetails.update(DBQuery.is("guild_id", guild.getGuild_id()), guild, true, false);
             LOG.trace("saved guild-details " + guild.getGuild_id() + " to mongodb");
         }

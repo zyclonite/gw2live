@@ -11,6 +11,7 @@ package net.zyclonite.gw2live.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import net.zyclonite.gw2live.model.GuildDetails;
@@ -55,7 +56,7 @@ public class RestHandler implements Handler<HttpServerRequest> {
             switch (endpoint) {
                 case "appconfig":
                     req.response().putHeader("Cache-Control", "max-age=3600");//cache for 1h
-                    output = "{\"wvw\":"+LocalCache.WVW_ENABLED+",\"pve\":"+LocalCache.PVE_ENABLED+"}";
+                    output = "{\"wvw\":" + LocalCache.WVW_ENABLED + ",\"pve\":" + LocalCache.PVE_ENABLED + "}";
                     break;
                 case "servertime":
                     req.response().putHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
@@ -159,18 +160,21 @@ public class RestHandler implements Handler<HttpServerRequest> {
                 case "guilddetails":
                     req.response().putHeader("Cache-Control", "max-age=3600");//cache for 1h
                     if (req.params().contains("guildid")) {
-                        final List<GuildDetails> guilds = db.findGuildDetailsById(req.params().get("guildid"));
-                        if (guilds.isEmpty()) {
-                            final GuildDetails guild = client.getGuildDetails(req.params().get("guildid"));
-                            if (guild != null) {
-                                guilds.add(guild);
+                        final List<GuildDetails> guilds = new ArrayList<>();
+                        final GuildDetails guild = db.findGuildDetailsById(req.params().get("guildid"));
+                        if (guild == null || guild.needsRenewal()) {
+                            final GuildDetails guild_new = client.getGuildDetails(req.params().get("guildid"));
+                            if (guild_new != null) {
+                                guilds.add(guild_new);
                                 db.saveGuildDetails(guilds);
                             }
+                        } else {
+                            guilds.add(guild);
                         }
                         output = mapper.writeValueAsString(guilds);
                     } else {
                         if (req.params().contains("guildname")) {
-                            output = mapper.writeValueAsString(db.findGuildDetailsById(req.params().get("guildname")));
+                            output = mapper.writeValueAsString(db.findGuildDetailsByName(req.params().get("guildname")));
                         } else {
                             output = "{\"error\":\"missing guildid or guildname parameter\"}";
                         }
@@ -216,7 +220,7 @@ public class RestHandler implements Handler<HttpServerRequest> {
                     req.response().putHeader("Pragma", "no-cache");
                     if (req.params().contains("match")) {
                         output = db.getTopGuilds(req.params().get("match"));
-                    }else{
+                    } else {
                         output = "{\"error\":\"missing match id\"}";
                     }
                     break;
