@@ -68,6 +68,9 @@ public class GuildDetails {
     }
     
     public Boolean needsRenewal() {
+        if(this._timestamp == null){
+            return true;
+        }
         final long timediff = (new Date()).getTime()-this._timestamp.getTime();
         if((CACHETIME_HOURS*60*60*1000) < timediff){
             return true;
