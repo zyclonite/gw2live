@@ -389,8 +389,9 @@ public final class MongoDB {
             return "[]";
         }
 
-        final DBObject matchFields = new BasicDBObject("timestamp", new BasicDBObject("$gt", wvwmatch.getStart_time()));
-        matchFields.put("timestamp", new BasicDBObject("$lt", wvwmatch.getEnd_time()));
+        final DBObject timerange = new BasicDBObject("$gt", wvwmatch.getStart_time());
+        timerange.put("$lt", wvwmatch.getEnd_time());
+        final DBObject matchFields = new BasicDBObject("timestamp", timerange);
         matchFields.put("match_id", matchid);
         final DBObject match = new BasicDBObject("$match", matchFields);
 
