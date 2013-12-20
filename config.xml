@@ -21,6 +21,7 @@
         <staticdata>./import</staticdata>
         <wvw-enabled>true</wvw-enabled>
         <pve-enabled>true</pve-enabled>
+        <guildstats-enabled>false</guildstats-enabled>
     </application>
     <cluster>
         <name>gw2live</name>

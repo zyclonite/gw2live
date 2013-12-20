@@ -127,8 +127,10 @@ public class Application {
     }
 
     private void initWvwGuildStatements() {
-        final GuildStatisticUpdateListener statement = new GuildStatisticUpdateListener();
-        LocalCache.STATEMENTS.add(statement);
+        if (config.getBoolean("application.guildstats-enabled", false)) {
+            final GuildStatisticUpdateListener statement = new GuildStatisticUpdateListener();
+            LocalCache.STATEMENTS.add(statement);
+        }
     }
 
     private void addStatement(final String name, final String epl, final String[] output) {
