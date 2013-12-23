@@ -405,7 +405,9 @@ public final class MongoDB {
         groupFields.put("count", new BasicDBObject("$sum", 1));
         final DBObject group = new BasicDBObject("$group", groupFields);
 
-        final DBObject sort = new BasicDBObject("$sort", new BasicDBObject("count", -1));
+        final DBObject sortFields = new BasicDBObject("count", -1);
+        sortFields.put("holdtime", -1);
+        final DBObject sort = new BasicDBObject("$sort", sortFields);
 
         final DBObject limit = new BasicDBObject("$limit", 10);
 
