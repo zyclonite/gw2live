@@ -58,6 +58,7 @@ public class EsperEngine {
         }
         //change preserve order for insert into statement (could end up in 100ms latch delay if true)
         espconfig.getEngineDefaults().getThreading().setInsertIntoDispatchPreserveOrder(false);
+        espconfig.setPatternMaxSubexpressions(10000L);//security feature - prevent memory leak
         espconfig.addEventTypeAutoName("net.zyclonite.gw2live.model");
 
         epService = EPServiceProviderManager.getProvider("stats", espconfig);
