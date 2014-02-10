@@ -76,6 +76,7 @@ $(function() {
             $('#warroomConfig').addClass("disabled").attr("disabled", "disabled");
             app_router.navigate("pve" + world + "/l" + language, false);
         }
+        ga('send', 'pageview');
         gw2map.init("#content", world, type, language, nickname, channel);
     };
 

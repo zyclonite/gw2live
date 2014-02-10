@@ -26,6 +26,7 @@
         <yui-compressor warn="true" munge="true" jsSuffix=".min.js" cssSuffix=".min.css" preserveAllSemiColons="false" fromDir="web" toDir="${build.dir}/web">
             <include name="*.html" />
             <include name="js/gw2*.js" />
+            <include name="js/ga.js" />
             <include name="js/script.js" />
             <include name="css/gw2*.css" />
             <include name="css/style.css" />
@@ -50,6 +51,7 @@
         </filelist>
 
         <filelist id="jsmingw2livelist" dir="${build.dir}/web/js">
+           <file name="ga.min.js"/>
            <file name="gw2map.min.js"/>
            <file name="script.min.js"/>
         </filelist>
