@@ -46,7 +46,7 @@ public class PostHandler implements Handler<HttpServerRequest> {
         req.response().putHeader("Access-Control-Allow-Origin", crossdomainpolicy);
         LOG.debug("got POST request path: " + req.path());
         final String endpoint = req.params().get("endpoint");
-        req.dataHandler(new Handler<Buffer>() {
+        req.bodyHandler(new Handler<Buffer>() {
             @Override
             public void handle(final Buffer buffer) {
                 String output;
