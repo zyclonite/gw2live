@@ -31,6 +31,7 @@ import org.vertx.java.core.sockjs.SockJSSocket;
 public class SockJsHandler implements Handler<SockJSSocket> {
 
     private static final Log LOG = LogFactory.getLog(SockJsHandler.class);
+    private static final int QUEUEMAXSIZE = 100;
     private final List<Subscriber> subscribers;
     private final HazelcastCache hcache;
     private final MongoDB db;
@@ -45,6 +46,7 @@ public class SockJsHandler implements Handler<SockJSSocket> {
     @Override
     public void handle(final SockJSSocket sock) {
         LOG.debug("Handle connection " + sock.writeHandlerID());
+        sock.setWriteQueueMaxSize(QUEUEMAXSIZE);
         final Subscriber subscriber = new Subscriber(sock.writeHandlerID(), hcache.getNodeId());
         subscribers.add(subscriber);
         sock.dataHandler(new Handler<Buffer>() {

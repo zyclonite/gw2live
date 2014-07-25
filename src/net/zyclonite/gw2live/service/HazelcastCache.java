@@ -12,9 +12,10 @@ package net.zyclonite.gw2live.service;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.ExecutorConfig;
 import com.hazelcast.config.GroupConfig;
-import com.hazelcast.config.Interfaces;
-import com.hazelcast.config.Join;
+import com.hazelcast.config.InterfacesConfig;
+import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.MapConfig;
+import com.hazelcast.config.MaxSizeConfig.MaxSizePolicy;
 import com.hazelcast.config.MulticastConfig;
 import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Cluster;
@@ -58,14 +59,14 @@ public class HazelcastCache {
         groupconfig.setName(config.getString("cluster.name", "gw2live"));
         groupconfig.setPassword(config.getString("cluster.password", "gw2live"));
         final MapConfig mapconfig = new MapConfig();
-        mapconfig.getMaxSizeConfig().setMaxSizePolicy("cluster_wide_map_size");
+        mapconfig.getMaxSizeConfig().setMaxSizePolicy(MaxSizePolicy.PER_PARTITION);
         mapconfig.getMaxSizeConfig().setSize(0);
         mapconfig.setEvictionPolicy(MapConfig.DEFAULT_EVICTION_POLICY);
         mapconfig.setBackupCount(1);
         mapconfigs.put("*-cache", mapconfig);
         final NetworkConfig nwconfig = new NetworkConfig();
         if(config.containsKey("cluster.interface")) {
-            final Interfaces interfaces = new Interfaces();
+            final InterfacesConfig interfaces = new InterfacesConfig();
             interfaces.addInterface(config.getString("cluster.interface"));
             interfaces.setEnabled(true);
             nwconfig.setInterfaces(interfaces);
@@ -78,13 +79,13 @@ public class HazelcastCache {
         mcconfig.setMulticastPort(config.getInteger("cluster.multicast.port", 58011));
         mcconfig.setMulticastTimeToLive(MulticastConfig.DEFAULT_MULTICAST_TTL);
         mcconfig.setMulticastTimeoutSeconds(MulticastConfig.DEFAULT_MULTICAST_TIMEOUT_SECONDS);
-        final Join join = new Join();
+        final JoinConfig join = new JoinConfig();
         join.setMulticastConfig(mcconfig);
         nwconfig.setJoin(join);
         final ExecutorConfig execconfig = new ExecutorConfig();
-        execconfig.setCorePoolSize(4);
-        execconfig.setKeepAliveSeconds(60);
-        execconfig.setMaxPoolSize(20);
+        execconfig.setName("default");
+        execconfig.setPoolSize(4);
+        execconfig.setQueueCapacity(100);
         final Map<String, ExecutorConfig> execmap = new HashMap<>();
         execmap.put("default", execconfig);
         final Config hconfig = new Config();
@@ -92,13 +93,13 @@ public class HazelcastCache {
         hconfig.setGroupConfig(groupconfig);
         hconfig.setMapConfigs(mapconfigs);
         hconfig.setNetworkConfig(nwconfig);
-        hconfig.setExecutorConfigMap(execmap);
+        hconfig.setExecutorConfigs(execmap);
         hconfig.setProperty("hazelcast.shutdownhook.enabled", "false");
         hconfig.setProperty("hazelcast.wait.seconds.before.join", "0");
         hconfig.setProperty("hazelcast.rest.enabled", "false");
         hconfig.setProperty("hazelcast.memcache.enabled", "false");
         hconfig.setProperty("hazelcast.mancenter.enabled", "false");
-        hconfig.setProperty("hazelcast.logging.type", "log4j");
+        hconfig.setProperty("hazelcast.logging.type", "none");
         cache = Hazelcast.newHazelcastInstance(hconfig);
 
         LOG.debug("Hazelcast initialized");
@@ -117,7 +118,7 @@ public class HazelcastCache {
     }
 
     public ExecutorService getExecutorService() {
-        return cache.getExecutorService();
+        return cache.getExecutorService("default");
     }
 
     public IMap<Integer, PveEvent> getPveCacheMap() {

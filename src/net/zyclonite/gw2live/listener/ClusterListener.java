@@ -10,6 +10,7 @@
 package net.zyclonite.gw2live.listener;
 
 import com.hazelcast.core.Member;
+import com.hazelcast.core.MemberAttributeEvent;
 import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
 import java.util.UUID;
@@ -70,5 +71,10 @@ public final class ClusterListener implements MembershipListener {
         }else{
             Application.switchSlave();
         }
+    }
+
+    @Override
+    public void memberAttributeChanged(MemberAttributeEvent mae) {
+        
     }
 }
