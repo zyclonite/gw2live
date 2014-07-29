@@ -34,8 +34,10 @@ function getStatus() {
             $('#pes > span').text("Eden Space " + parseSize(data.memInfo['PS Eden Space'].usage.used) + "/" + parseSize(data.memInfo['PS Eden Space'].usage.committed));
             $('#cc > div.progress > div.bar').width(((data.memInfo['Code Cache'].usage.used / data.memInfo['Code Cache'].usage.committed) * 100) + "%");
             $('#cc > span').text("Code Cache " + parseSize(data.memInfo['Code Cache'].usage.used) + "/" + parseSize(data.memInfo['Code Cache'].usage.committed));
-            $('#ppg > div.progress > div.bar').width(((data.memInfo['PS Perm Gen'].usage.used / data.memInfo['PS Perm Gen'].usage.committed) * 100) + "%");
-            $('#ppg > span').text("Perm Gen " + parseSize(data.memInfo['PS Perm Gen'].usage.used) + "/" + parseSize(data.memInfo['PS Perm Gen'].usage.committed));
+            $('#ccs > div.progress > div.bar').width(((data.memInfo['Compressed Class Space'].usage.used / data.memInfo['Compressed Class Space'].usage.committed) * 100) + "%");
+            $('#ccs > span').text("Class Space " + parseSize(data.memInfo['Compressed Class Space'].usage.used) + "/" + parseSize(data.memInfo['Compressed Class Space'].usage.committed));
+            $('#ms > div.progress > div.bar').width(((data.memInfo['Metaspace'].usage.used / data.memInfo['Metaspace'].usage.committed) * 100) + "%");
+            $('#ms > span').text("Meta Space " + parseSize(data.memInfo['Metaspace'].usage.used) + "/" + parseSize(data.memInfo['Metaspace'].usage.committed));
         });
         $.getJSON("admin/pvecache")
                 .done(function(data) {
