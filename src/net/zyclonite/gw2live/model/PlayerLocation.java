@@ -24,6 +24,9 @@ public class PlayerLocation implements Serializable {
     private String _identity;
     private Long _world_id;
     private Long _map_id;
+    private Long _profession;
+    private Boolean commander;
+    private Long _team_color_id;
     private Double _x;
     private Double _y;
     private Double _z;
@@ -98,5 +101,47 @@ public class PlayerLocation implements Serializable {
 
     public void setZ(final Double z) {
         this._z = z;
+    }
+
+    /**
+     * @return the _profession
+     */
+    public Long getProfession() {
+        return _profession;
+    }
+
+    /**
+     * @param _profession the _profession to set
+     */
+    public void setProfession(Long _profession) {
+        this._profession = _profession;
+    }
+
+    /**
+     * @return the commander
+     */
+    public Boolean getCommander() {
+        return commander;
+    }
+
+    /**
+     * @param commander the commander to set
+     */
+    public void setCommander(Boolean commander) {
+        this.commander = commander;
+    }
+
+    /**
+     * @return the _team_color_id
+     */
+    public Long getTeam_color_id() {
+        return _team_color_id;
+    }
+
+    /**
+     * @param _team_color_id the _team_color_id to set
+     */
+    public void setTeam_color_id(Long _team_color_id) {
+        this._team_color_id = _team_color_id;
     }
 }
