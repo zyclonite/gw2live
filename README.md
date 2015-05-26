@@ -5,8 +5,6 @@ GuildWars 2 Dynamic Map
 gw2live utilizes the GuildWars 2 API to create a dynamic web experience for the PvE and WvW maps
 In combination with the gw2live-client project, live player position data can be used to see the current player position of all partitipants in one channel
 
-To see gw2live in action go to: http://gw2map.com
-
 ## Source
 
 The project's source code is hosted at:
